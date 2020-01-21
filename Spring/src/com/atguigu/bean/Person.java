@@ -9,8 +9,18 @@ public class Person {
 	public String getLastName() {
 		return lastName;
 	}
+	
+	
+	public Person() {
+		super();
+		System.out.println("person¥¥Ω®¡À°£°£°£");
+	}
+
+
 	public void setLastName(String lastName) {
+		System.out.println("setLastName...."+lastName);
 		this.lastName = lastName;
+		
 	}
 	public Integer getAge() {
 		return age;

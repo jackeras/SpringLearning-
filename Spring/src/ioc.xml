@@ -20,6 +20,9 @@
 		<property name="email" value="zhangsan@atgui.com"></property>
 		<property name="gender" value="男"></property>
 	</bean>
+	<bean id="person02" class="com.atguigu.bean.Person">
+		<property name="lastName" value="小花"></property>
+	</bean>
 	
 
 </beans>
