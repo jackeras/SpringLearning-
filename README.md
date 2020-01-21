@@ -10,17 +10,28 @@ SpringLearning
 ## 实验一：HelloWorld
 
 1.导包
+
 核心容器
-	1)spring-beans-4.0.0.RELEASE.jar
-	2)spring-context-4.0.0.RELEASE.jar
-	3)spring-core-4.0.0.RELEASE.jar
-	4)spring-expression-4.0.0.RELEASE.jar
+
+1)spring-beans-4.0.0.RELEASE.jar
+
+2)spring-context-4.0.0.RELEASE.jar
+
+3)spring-core-4.0.0.RELEASE.jar
+
+4)spring-expression-4.0.0.RELEASE.jar
+
 Spring运行时候依赖一个日志包，没有就报错
-	5)commons-logging-1.1.3.jar
+
+5)commons-logging-1.1.3.jar
+
 2.写配置
-	1)Spring的配置文件中，集合了Spring的IOC容器管理的所有组件；
-	2)创建一个Spring Bean Configuration File（Spring的bean配置文件）
-	3)
+
+​	1)Spring的配置文件中，集合了Spring的IOC容器管理的所有组件；
+
+​	2)创建一个Spring Bean Configuration File（Spring的bean配置文件）
+
+​	3)
 
 ```
 <bean id="person01" class="com.atguigu.bean.Person">
