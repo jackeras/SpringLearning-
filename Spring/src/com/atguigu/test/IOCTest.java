@@ -14,7 +14,43 @@ import com.atguigu.bean.Person;
 class IOCTest {
 	
 	//private ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc1.xml");
-	private ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc2.xml");
+//	private ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc2.xml");
+	private ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc3.xml");
+	
+
+	@Test
+	public void test08() {
+		System.out.println("容器启动完成。。。");
+//		Object bean = ioc.getBean("book");
+//		Object bean2 = ioc.getBean("book");
+//		System.out.println(bean == bean2);
+		Object bean = ioc.getBean("book");
+		Object bean2 = ioc.getBean("book");
+		System.out.println(bean == bean2);
+	}
+	
+	
+	/*
+	 * org.springframework.beans.factory.BeanIsAbstractException: Error creating
+	 * bean with name 'person05': 
+	 * Bean definition is abstract
+	 */
+	@Test
+	public void test07() {
+		Person person06 = (Person)ioc.getBean("person05");
+		System.out.println(person06);
+	}
+	
+	/*
+	 * 级联属性可以修改属性的属性，注意：原来的bean的值可能会被修改
+	 */
+	@Test
+	public void test06() {
+		Person person04 = (Person)ioc.getBean("person04");
+		Object car = ioc.getBean("car01");
+		System.out.println("容器中的car："+car);
+		System.out.println("Person中的car："+person04.getCar());
+	}
 	
 	@Test
 	public void test05() {
@@ -34,9 +70,11 @@ class IOCTest {
 		//Object bean = ioc.getBean("carInner");
 		//System.out.println(bean);
 		
-		
 		Map<String,Object> maps = person01.getMaps();
 		System.out.println(maps);
+		System.out.println("==================");
+		System.out.println(person01.getProperties());
+		
 	}
 	
 	/**

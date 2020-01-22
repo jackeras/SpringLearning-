@@ -1,4 +1,7 @@
+
+
 # SpringLearning-
+
 SpringLearning
 
 
@@ -33,7 +36,7 @@ Spring运行时候依赖一个日志包，没有就报错
 
 ​	3)
 
-```
+```java
 <bean id="person01" class="com.atguigu.bean.Person">
 		<property name="lastName" value="张三"></property>
 		<property name="age" value="18"></property>
@@ -44,7 +47,7 @@ Spring运行时候依赖一个日志包，没有就报错
 
 3.测试
 
-```
+```java
 @Test
 	public void test() {
 		ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc.xml");
@@ -87,7 +90,7 @@ Spring运行时候依赖一个日志包，没有就报错
 
 4)容器中如果没有这个组件，获取组件？
 
-```
+```java
 org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'person03' is defined
 ```
 
@@ -128,7 +131,7 @@ org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying
 
 1）在Person类中，创建有参构造器
 
-```
+```java
 public Person(String lastName, Integer age, String gender, String email) {
 		super();
 		this.lastName = lastName;
@@ -141,7 +144,7 @@ public Person(String lastName, Integer age, String gender, String email) {
 
 2）在配置文件ioc.xml中,配置有参构造器类并赋值（其中constructor-arg为属性赋值）
 
-```
+```java
 <bean id="person03" class="com.atguigu.bean.Person">
 		<!-- 调用有参构造器进行创建对象并赋值 -->
 		<!-- public Person(String lastName, Integer age, String gender, String email) -->
@@ -154,7 +157,7 @@ public Person(String lastName, Integer age, String gender, String email) {
 
 3）在IOCTest文件中，测试有参构造器
 
-```
+```java
 @Test
 	public void test03() {
 		//Person bean = ioc.getBean(Person.class);
@@ -171,7 +174,7 @@ public Person(String lastName, Integer age, String gender, String email) {
 
 index可以起到定位的作用
 
-```
+```java
 <!-- 可以省略name属性，但是要严格按照构造器参数的位置 -->
 	<bean id="person04" class="com.atguigu.bean.Person">
 		<constructor-arg value="小花"></constructor-arg>
@@ -186,7 +189,7 @@ index可以起到定位的作用
 
 如果有构造器重载的情况下，ioc配置里，可能产生混乱。例如：
 
-```
+```java
 public Person(String lastName, Integer age, String gender) {
 		this.lastName = lastName;
 		this.age = age;
@@ -202,7 +205,7 @@ public Person(String lastName,String email, String gender) {
 }
 ```
 
-```
+```java
 <bean id="person05" class="com.atguigu.bean.Person">
 		<!--ioc容器只能大概根据某种规则分配，但结果往往是不理想的-->
 		<constructor-arg value="小丽"></constructor-arg>
@@ -213,7 +216,7 @@ public Person(String lastName,String email, String gender) {
 
 可以通过type来指定：
 
-```
+```java
 <bean id="person05" class="com.atguigu.bean.Person">
 		<constructor-arg value="小丽"></constructor-arg>
 		<constructor-arg value="18" index="1" type="java.lang.Integer"></constructor-arg>
@@ -225,7 +228,7 @@ public Person(String lastName,String email, String gender) {
 
 名称空间，在XML中名称空间是用来防止标签重复的。
 
-```
+```java
 <!--  如何区分别标签name？通过添加前缀来区分
 		<book>
 			<b:name>西游记</b:name>
@@ -246,28 +249,24 @@ public Person(String lastName,String email, String gender) {
 
 2）使用P名称空间赋值
 
-```
+```java
 <bean id="person06" class="com.atguigu.bean.Person"
 		p:age="18" p:email="xiaoming@atgui.com" p:lastName="哈哈" p:gender="男">
 	</bean>
 ```
 
-
-
 ## 实验4：正确的为各种属性赋值
 
-## util名称空间创建集合类型的bean、级联属性赋值。
-
-1、测试使用null值 
+#### 1、测试使用null值 
 
 默认引用类型就是null，基本类型是默认值
 
-```
+```java
 <bean id="person01" class="com.atguigu.bean.Person">
 </bean>
 ```
 
-```
+```java
 @Test
 	public void test04() {
 		Object bean = ioc.getBean("person01");
@@ -281,14 +280,14 @@ public Person(String lastName,String email, String gender) {
 
 #### 错误赋值null：
 
-```
+```java
 <bean id="person01" class="com.atguigu.bean.Person">
      	<!-- lastName="null" -->
      	<property name="lastName" value="null"></property>
      </bean>
 ```
 
-```
+```java
 @Test
 	public void test04() {
 		Person bean = (Person) ioc.getBean("person01");
@@ -300,7 +299,7 @@ public Person(String lastName,String email, String gender) {
 
 #### 正确赋值null：在property下用null标签赋值
 
-```
+```java
 <bean id="person01" class="com.atguigu.bean.Person">
      	<!-- lastName="null" -->
      	<property name="lastName" >
@@ -310,13 +309,13 @@ public Person(String lastName,String email, String gender) {
      </bean>
 ```
 
-2、引用类型赋值（引用其他bean、引用内部bean）
+#### 2、引用类型赋值（引用其他bean、引用内部bean）
 
 1）引用其他bean
 
 定义一个car类
 
-```
+```java
 <bean id="car01" class="com.atguigu.bean.Car">
      	<property name="carName" value="宝马"></property>
      	<property name="color" value="绿色"></property>
@@ -326,7 +325,7 @@ public Person(String lastName,String email, String gender) {
 
 在person01中使用ref标签，来引用car01类
 
-```
+```java
  <bean id="person01" class="com.atguigu.bean.Person">
      	<!-- lastName="null" -->
      	<property name="lastName" >
@@ -340,7 +339,7 @@ public Person(String lastName,String email, String gender) {
 
 2）引用内部bean
 
-```
+```java
 <property name="car">
      		<!-- 对象我们可以使用bean标签创建 car = new Car(); -->
      		<bean class="com.atguigu.bean.Car">
@@ -349,7 +348,7 @@ public Person(String lastName,String email, String gender) {
 </property>
 ```
 
-```
+```java
 @Test
 	public void test05() {
 		Person person01 = (Person) ioc.getBean("person01");
@@ -360,11 +359,11 @@ public Person(String lastName,String email, String gender) {
 
 ![image-20200122111515451](C:\Users\试用\AppData\Roaming\Typora\typora-user-images\image-20200122111515451.png)
 
-3.集合类型赋值（List、Map、Properties）
+#### 3.集合类型赋值（List、Map、Properties）
 
 1）list赋值（外部book，引用外部book）
 
-```
+```java
 <bean id="person02" class="com.atguigu.bean.Person">
 		<!-- 如何为list类型辅助 -->
 		<property name="books">
@@ -379,7 +378,7 @@ public Person(String lastName,String email, String gender) {
 	</bean>
 ```
 
-```
+```java
 @Test
 	public void test05() {
 		Person person01 = (Person) ioc.getBean("person02");
@@ -397,7 +396,7 @@ public Person(String lastName,String email, String gender) {
 
 例如：peroson01中，id叫carInner的内部类。
 
-```
+```java
 <bean id="person01" class="com.atguigu.bean.Person">
      	<!-- lastName="null" -->
      	<property name="lastName" >
@@ -417,7 +416,7 @@ public Person(String lastName,String email, String gender) {
      </bean>
 ```
 
-```
+```java
 @Test
 	public void test05() {
 		Person person01 = (Person) ioc.getBean("person02");
@@ -436,7 +435,7 @@ public Person(String lastName,String email, String gender) {
 
 ##### 会报错：
 
-```
+```java
 /*
 	* org.springframework.beans.factory.NoSuchBeanDefinitionException:
 	*  No bean named 'carInner' is defined
@@ -445,7 +444,7 @@ public Person(String lastName,String email, String gender) {
 
 2)map赋值
 
-```
+```java
 <property name="maps">
 			<!-- maps = new LinkedHashMap<>(); -->
 			<map>
@@ -484,3 +483,250 @@ public Person(String lastName,String email, String gender) {
 ```
 
 ![image-20200122114803233](C:\Users\试用\AppData\Roaming\Typora\typora-user-images\image-20200122114803233.png)
+
+3)Properties赋值
+
+```java
+<property name="properties">
+		<!-- properties = new Properties();所有的k=v都是String -->
+			<props>
+				<!-- k=v都是string,值直接写在标签体中 -->
+				<prop key="username">root</prop>
+				<prop key="password">123456</prop>
+			</props>
+</property>
+```
+
+```java
+@Test
+	public void test05() {
+		Person person01 = (Person) ioc.getBean("person02");
+
+		Car car = person01.getCar();
+		System.out.println(car);
+		List<Book> books = person01.getBooks();
+		System.out.println(books);
+	
+		System.out.println("========");
+	
+		Map<String,Object> maps = person01.getMaps();
+		System.out.println(maps);
+		System.out.println("==================");
+		System.out.println(person01.getProperties());
+}
+```
+
+![image-20200122153654152](F:\code\SpringLearning-\image\image-20200122153654152.png)
+
+#### 4.util名称空间创建集合类型的bean
+
+```java
+<!-- 相当于new LinkedHashMap() -->
+	<util:map id="myMap">
+		<!-- 添加元素 -->
+				<entry key="key01" value="张三"></entry>
+				<entry key="key02" value="18"></entry>
+				<entry key="key03" value-ref="book01"></entry>
+				<entry key="key04">
+					<bean class="com.atguigu.bean.Car">
+						<property name="carName" value="宝马"></property>
+					</bean>				
+				</entry>
+				<entry key="key05">
+					<value>李四</value>
+				</entry>
+				 <entry key="key05">
+						<map></map>
+				</entry>
+	</util:map>
+```
+
+```java
+<bean id="person03" class="com.atguigu.bean.Person">
+		<!--  <property name="maps" ref=></property>-->
+		<property name="maps" ref="myMap"></property>
+</bean>
+```
+
+```java
+@Test
+	public void test06() {
+		Person person03 = (Person)ioc.getBean("person03");
+		Map<String,Object> maps = person03.getMaps();
+		System.out.println(maps);
+	}
+```
+
+![image-20200122155543287](F:\code\SpringLearning-\image\image-20200122155543287.png)
+
+#### 5.级联属性赋值
+
+级联属性可以修改属性的属性，注意：原来的bean的值可能会被修改
+
+```java
+<bean id="person04" class="com.atguigu.bean.Person">
+	<!-- 为car赋值的时候，改变car的价格 -->
+		<property name="car" ref="car01"></property>
+		<property name="car.price" value="900000"></property>
+</bean>
+```
+
+```java
+@Test
+	public void test06() {
+		Person person04 = (Person)ioc.getBean("person04");
+		Object car = ioc.getBean("car01");
+		System.out.println("容器中的car："+car);
+		System.out.println("Person中的car："+person04.getCar());
+	}
+```
+
+
+
+## 实验6：通过继承实现bean配置信息的重用
+
+```java
+<bean id="person05" class="com.atguigu.bean.Person">
+		<property name="lastName" value="张三"></property>
+		<property name="age" value="18"></property>
+		<property name="gender" value="男"></property>
+		<property name="email" value="zhangsan@atgui.com"></property>
+</bean>
+	<!-- parent:指定当前bean的配置信息继承于哪个 -->
+<bean id="person06"  parent="person05">
+		<property name="lastName" value ="李四"></property>
+</bean>
+```
+
+```java
+@Test
+	public void test07() {
+		Person person06 = (Person)ioc.getBean("person06");
+		System.out.println(person06);
+	}
+```
+
+![image-20200122161247032](F:\code\SpringLearning-\image\image-20200122161247032.png)
+
+## 实验7：通过abstract属性创建一个模板bean
+
+```java
+<!-- abstract="true" 这个bean的配置是一个抽象的，不能获取它的实例，只能被别人用来继承 -->
+	<bean id="person05" class="com.atguigu.bean.Person" abstract="true">
+		<property name="lastName" value="张三"></property>
+		<property name="age" value="18"></property>
+		<property name="gender" value="男"></property>
+		<property name="email" value="zhangsan@atgui.com"></property>
+	</bean>
+```
+
+```java
+@Test
+	public void test07() {
+		Person person06 = (Person)ioc.getBean("person05");
+		System.out.println(person06);
+	}
+```
+
+#### 报错：
+
+```java
+org.springframework.beans.factory.BeanIsAbstractException: 
+		Error creating bean with name 'person05': 
+		Bean definition is abstract
+```
+
+## 实验8：bean之间的依赖
+
+1）没有建立依赖之前的bean创建顺序：
+
+```java
+<!-- 原来是按照配置顺序创建的bean的 -->
+	<!-- 改变bean的创建顺序 -->
+	<!-- 实验8：bean之间的依赖 （只是改变创建顺序-->
+	<bean id="car" class="com.atguigu.bean.Car"></bean>
+	<bean id="person" class="com.atguigu.bean.Person" ></bean>
+	<bean id="book" class="com.atguigu.bean.Book"></bean>
+```
+
+![image-20200122162906512](F:\code\SpringLearning-\image\image-20200122162906512.png)
+
+2）创建依赖后bean的创建顺序：
+
+```java
+<!-- 原来是按照配置顺序创建的bean的 -->
+	<!-- 改变bean的创建顺序 -->
+	<!-- 实验8：bean之间的依赖 （只是改变创建顺序-->
+	<bean id="car" class="com.atguigu.bean.Car" depends-on="person,book"></bean>
+	<bean id="person" class="com.atguigu.bean.Person" ></bean>
+	<bean id="book" class="com.atguigu.bean.Book"></bean>
+```
+
+![image-20200122162953234](F:\code\SpringLearning-\image\image-20200122162953234.png)
+
+## 实验9：测试bean的作用域，分别创建单实例和多实例的bean★
+
+bean的作用域:指定bean是否单实例，xxx：默认是单实例的	
+scope属性：
+	prototype：多实例的
+		1)容器启动默认不会去创建多实例bean
+		2）获取的时候创建这个bean
+		3）每次获取都会创建一个新的对象
+	singleton：单实例的（默认）
+		1）在容器启动完成之前就已经创建好对象，保存在容器中了
+		2)任何获取都是获取之前创建好的那个对象
+	request：在web环境下，同一次请求创建一个bean实例（没用）
+	session：在web环境下，同一次会话创建一个bean实例（没用）
+
+#### 1.singleton
+
+```java
+<bean id="book" class="com.atguigu.bean.Book"></bean>
+```
+
+```java
+@Test
+	public void test08() {
+		System.out.println("容器启动完成。。。");
+		Object bean = ioc.getBean("book");
+		Object bean2 = ioc.getBean("book");
+		System.out.println(bean == bean2);
+		Object bean = ioc.getBean("book");
+		Object bean2 = ioc.getBean("book");
+		System.out.println(bean == bean2);
+	}
+```
+
+![image-20200122164344530](F:\code\SpringLearning-\image\image-20200122164344530.png)
+
+scope=“singleton”结论：
+
+1）在容器启动完成之前就已经创建好对象，保存在容器中了
+2）任何获取都是获取之前创建好的那个对象
+
+#### 2.prototype（多实例）
+
+```java
+<bean id="book" class="com.atguigu.bean.Book" scope="prototype"></bean>
+```
+
+```java
+@Test
+	public void test08() {
+		System.out.println("容器启动完成。。。");
+//		Object bean = ioc.getBean("book");
+//		Object bean2 = ioc.getBean("book");
+//		System.out.println(bean == bean2);
+		Object bean = ioc.getBean("book");
+		Object bean2 = ioc.getBean("book");
+		System.out.println(bean == bean2);
+	}
+```
+
+![image-20200122164548189](F:\code\SpringLearning-\image\image-20200122164548189.png)
+
+scope=“prototype”结论：
+
+1）容器启动默认不会去创建多实例bean
+2）获取的时候才会去创建这个bean
+3）每次获取都会创建一个新的对象

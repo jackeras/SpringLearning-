@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 原来是按照配置顺序创建的bean的 -->
+	<!-- 改变bean的创建顺序 -->
+	<!-- 实验8：bean之间的依赖 （只是改变创建顺序-->
+	<bean id="car" class="com.atguigu.bean.Car" depends-on="person"></bean>
+	<bean id="person" class="com.atguigu.bean.Person" ></bean>
+	
+	<!-- 实验9：测试bean的作用域，分别创建单实例和多实例的bean★ 
+		bean的作用域:指定bean是否单实例，xxx：默认是单实例的
+		
+	scope属性：
+		prototype：多实例的
+			1)容器启动默认不会去创建多实例bean
+			2）获取的时候创建这个bean
+			3）每次获取都会创建一个新的对象
+		singleton：单实例的（默认）
+			1）在容器启动完成之前就已经创建好对象，保存在容器中了
+			2)任何获取都是获取之前创建好的那个对象
+		request：在web环境下，同一次请求创建一个bean实例（没用）
+		session：在web环境下，同一次会话创建一个bean实例（没用）
+	-->
+	<bean id="book" class="com.atguigu.bean.Book" scope="prototype"></bean>
+	
+</beans>

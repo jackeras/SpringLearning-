@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javafx.beans.property.Property;
+
 public class Person {
 
 	//基本类型直接使用
@@ -18,6 +20,9 @@ public class Person {
 	private List<Book> books;
 	
 	private Map<String,Object> maps;
+	
+	private Properties properties;
+	
 	
 	public Car getCar() {
 		return car;
@@ -51,7 +56,7 @@ public class Person {
 		this.properties = properties;
 	}
 
-	private Properties properties;
+	
 	
 	public String getLastName() {
 		return lastName;

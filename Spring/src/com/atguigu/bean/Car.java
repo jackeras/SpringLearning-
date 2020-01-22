@@ -6,6 +6,14 @@ public class Car {
 	private Integer price;
 	private String color;
 	
+	
+	
+	public Car() {
+		super();
+		// TODO Auto-generated constructor stub
+		System.out.println("car±»´´½¨¡£¡£¡£");
+	}
+
 	public String getCarName() {
 		return carName;
 	}
