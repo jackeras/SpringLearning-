@@ -1,12 +1,66 @@
 package com.atguigu.test;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.atguigu.bean.Book;
+import com.atguigu.bean.Car;
 import com.atguigu.bean.Person;
 
 class IOCTest {
+	
+	//private ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc1.xml");
+	private ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc2.xml");
+	
+	@Test
+	public void test05() {
+		Person person01 = (Person) ioc.getBean("person02");
+		
+		Car car = person01.getCar();
+		System.out.println(car);
+		List<Book> books = person01.getBooks();
+		System.out.println(books);
+		
+		/*
+		 * 内部bean是不能用id来获取的
+		 * org.springframework.beans.factory.NoSuchBeanDefinitionException:
+		 *  No bean named 'carInner' is defined
+		 */
+		System.out.println("========");
+		//Object bean = ioc.getBean("carInner");
+		//System.out.println(bean);
+		
+		
+		Map<String,Object> maps = person01.getMaps();
+		System.out.println(maps);
+	}
+	
+	/**
+	 *实验4：正确的为各种属性赋值
+	 * 		测试使用null值、默认引用类型就是null，基本类型是默认值
+	 * 
+	 */
+	@Test
+	public void test04() {
+		Person bean = (Person) ioc.getBean("person01");
+		System.out.println(bean.getLastName() == null);
+		System.out.println("person的car"+bean.getCar());
+		Car bean5 = (Car)ioc.getBean("car01");
+		
+		bean5.setCarName("haha ");
+		
+		System.out.println("我修改了容器中的car，你的car变了没？"+bean.getCar());
+		Car car =bean.getCar();
+		
+		System.out.println(bean5==car);
+		
+	}
+	
+	
 	
 	/**
 	 * 存在的几个问题：
@@ -36,15 +90,49 @@ class IOCTest {
 	 */
 
 	@Test
+	public void test03() {
+		//Person bean = ioc.getBean(Person.class);
+		//System.out.println(bean);
+		Person bean2 = ioc.getBean("person02",Person.class);
+		System.out.println(bean2);
+		
+		Person bean4 = ioc.getBean("person06",Person.class);
+		System.out.println(bean4);
+	}
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * 实验2：根据bean的类型从IOC容器中获取bean的实例★
+	 * 如果IOC容器中这个类型的bean有多个，查找就会报错
+	 * org.springframework.beans.factory.NoUniqueBeanDefinitionException: 
+	 * No qualifying bean of type [com.atguigu.bean.Person] is defined: 
+	 * expected single matching bean but found 2: person01,person02
+	 */
+	@Test
+	public void test02() {
+		//Person bean = ioc.getBean(Person.class);
+		//System.out.println(bean);
+		Person bean2 = ioc.getBean("person02",Person.class);
+		System.out.println(bean2);
+	}
+	
+	
+	
+	@Test
 	public void test() {
-		ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc.xml");//ioc容器的配置文件在类路径之下。
+		//ApplicationContext ioc = new ClassPathXmlApplicationContext("ioc.xml");//ioc容器的配置文件在类路径之下。
 		System.out.println("容器启动完成...");
 		Person bean = (Person) ioc.getBean("person01");
 		Object bean2 = ioc.getBean("person01");
 		System.out.println(bean == bean2);
 		
 		System.out.println("==============");
-		Object bean3 = ioc.getBean("person03");
+		//Object bean3 = ioc.getBean("person03");
 	}
 
 }

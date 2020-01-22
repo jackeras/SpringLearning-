@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- 注册一个Person对象，Spring会自动创建这个Person对象 -->
@@ -23,6 +24,56 @@
 	<bean id="person02" class="com.atguigu.bean.Person">
 		<property name="lastName" value="小花"></property>
 	</bean>
+	<bean id="person03" class="com.atguigu.bean.Person">
+		<!-- 调用有参构造器进行创建对象并赋值,掌握 -->
+		<!-- public Person(String lastName, Integer age, String gender, String email) -->
+		<constructor-arg name="lastName" value="小明"></constructor-arg>
+		<constructor-arg name="email" value="xiaoming@atgui.com"></constructor-arg>
+		<constructor-arg name="gender" value="男"></constructor-arg>
+		<constructor-arg name="age" value="18"></constructor-arg>
+	</bean>
 	
+	<!-- 可以省略name属性，但是要严格按照构造器参数的位置 -->
+	<bean id="person04" class="com.atguigu.bean.Person">
+		<constructor-arg value="小花"></constructor-arg>
+		<constructor-arg value="18"></constructor-arg>
+		<!-- index="3",为参数指定索引，从0开始 -->
+		<constructor-arg value="男" index="2"></constructor-arg>
+		<constructor-arg value="xiaohua@atgui.com"></constructor-arg>
+	</bean>
+	
+	<!-- public Person(String lastName,String email, String gender) 
+	public Person(String lastName, Integer age, String gender)
+	 -->
+	<!-- 重载的情况下type可以指定参数的类型 -->
+	<bean id="person05" class="com.atguigu.bean.Person">
+		<constructor-arg value="小丽"></constructor-arg>
+		<constructor-arg value="18" index="1" type="java.lang.Integer"></constructor-arg>
+		<constructor-arg value="男"></constructor-arg>
+	</bean>
+	<!-- 通过p名称空间为bean赋值 -->
+	<!-- 名称空间，在XML中名称空间是用来防止标签重复的 -->
+	<!-- 1)导入名称空间2）使用名称空间 -->
+	<!--  如何区分别标签？
+		<book>
+			<b:name>西游记</b:name>
+			<price>19.98</price>
+			<author>
+				<a:name>吴承恩</a:name>
+				<gender>男</gender>
+			</author>
+		</book>
+		
+		带前缀的标签<c:forEach> <jsp:forward>
+	-->
+	<bean id="person06" class="com.atguigu.bean.Person"
+		p:age="18" p:email="xiaoming@atgui.com" 
+		p:lastName="哈哈" p:gender="男">
+	</bean>
+	
+
+
+
+
 
 </beans>
