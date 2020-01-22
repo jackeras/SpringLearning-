@@ -25,4 +25,53 @@
 	-->
 	<bean id="book" class="com.atguigu.bean.Book" scope="prototype"></bean>
 	
+	<!-- 实验5配置通过静态工厂方法创建的bean、实例工厂方法创建的bean、FactoryBean★ -->
+	<!-- bean的创建默认就是框架利用反射new出来的bean实例 -->
+	
+	<!-- 工厂模式：工厂帮我们创建对象；有一个专门帮我们创建对象的类，这个类就是工厂
+		AirPlaneFactory.getAirPlane(String jzName);
+		
+		静态工厂：工厂本身不用创建对象；通过静态方法调用，对象 = 工厂类。工厂方法名（）；
+		实例工厂：工厂本身需要创建对象，
+				工厂类  工厂对象 = new工厂类（）；
+				工厂对象.getAirPlane("张三")
+	 -->
+	<!-- 1.静态工厂（不需要创建工厂本身）factory-method="getAirPlane"指定哪个方法是工厂方法
+		指定哪个方法是工厂方法
+		class:指定静态工厂全类名
+		factory-method：指定工厂方法
+		constructor-arg:可以为方法传参	
+	 -->
+	<bean id="airPlane01" class="com.atguigu.factory.AirPlaneStaticFactory" 
+		factory-method="getAirPlane">
+		<!-- 可以为方法指定参数 -->
+		<constructor-arg value="李四"></constructor-arg>
+	</bean>
+	
+	<!-- 2.实例工厂使用 
+		factory-method:指定这个实例工厂中哪个方法是工厂方法
+	-->
+	<bean id="AirPlaneInstanceFactory" class="com.atguigu.factory.AirPlaneInstanceFactory"></bean>
+	
+	<!-- factory-bean:指定当前对象创建使用哪个工厂 
+		1.先配置出实例工厂对象
+		2.配置我们要创建的AirPlane使用哪个工厂创建
+			1）factory-bean:指定使用哪个工厂实例
+			2）factory-method：使用哪个工厂方法
+	-->
+	<bean id="airPlane02" class="com.atguigu.bean.AirPlane" 
+		factory-bean="AirPlaneInstanceFactory"  
+		factory-method="getAirPlane">
+		<constructor-arg value="王五"></constructor-arg>
+	</bean>
+	
+	<!-- FactoryBean(是Spring规定的一个借口）只要是这个借口的实现类，
+			Spring都认为是一个工厂
+			1.ioc容器启动的时候不会创建实例 
+			2.FactoryBean:获取的时候才创建对象
+			-->
+	<bean id="myFactoryBeanImple" class="com.atguigu.factory.MyFactoryBeanImple"></bean>
+	
+	
+	
 </beans>

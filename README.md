@@ -730,3 +730,164 @@ scope=“prototype”结论：
 1）容器启动默认不会去创建多实例bean
 2）获取的时候才会去创建这个bean
 3）每次获取都会创建一个新的对象
+
+## 实验5：配置通过静态工厂方法创建的bean、实例工厂方法创建的bean、FactoryBean★
+
+工厂模式：工厂帮我们创建对象；有一个专门帮我们创建对象的类，这个类就是工厂
+					AirPlaneFactory.getAirPlane(String jzName);
+
+#### 1)静态工厂
+
+静态工厂：工厂本身不用创建对象；通过静态方法调用，对象 = 工厂类.工厂方法名（）；
+
+factory-method="getAirPlane"指定哪个方法是工厂方法
+		class:指定静态工厂全类名
+		factory-method：指定工厂方法
+		constructor-arg:可以为方法传参
+
+```java
+<bean id="airPlane01" class="com.atguigu.factory.AirPlaneStaticFactory" 
+		factory-method="getAirPlane">
+		<!-- 可以为方法指定参数 -->
+		<constructor-arg value="李四"></constructor-arg>
+</bean>
+```
+
+```java
+/*
+ * 静态工厂
+ */
+public class AirPlaneStaticFactory {
+//AirPlaneStaticFactory.getAirPlane()
+	public static AirPlane getAirPlane(String jzName) {
+		AirPlane airPlane = new AirPlane();
+		airPlane.setFdj("太行");
+		airPlane.setFjsName("lfy");
+		airPlane.setJzName(jzName);
+		airPlane.setPersonNum(300);
+		airPlane.setYc("198.98m");
+		return airPlane;
+	}
+}
+```
+
+```java
+@Test
+	public void test09() {
+	Object bean = ioc.getBean("airPlane01");
+	System.out.println(bean);
+	System.out.println("容器启动完成。。。。");
+}
+```
+
+![image-20200122185808216](F:\code\SpringLearning-\image\image-20200122185808216.png)
+
+#### 2)实例工厂
+
+factory-method:指定这个实例工厂中哪个方法是工厂方法
+
+factory-bean:指定当前对象创建使用哪个工厂 
+		1.先配置出实例工厂对象
+		2.配置我们要创建的AirPlane使用哪个工厂创建
+			1）factory-bean:指定使用哪个工厂实例
+			2）factory-method：使用哪个工厂方法
+
+实例工厂：工厂本身需要创建对象，
+				工厂类  工厂对象 = new工厂类（）；
+				工厂对象.getAirPlane("张三")
+
+```java
+//new AirPlaneInstanceFactory().getAirPlane();
+	public  AirPlane getAirPlane(String jzName) {
+		System.out.println("AirPlaneInstanceFactory...正在造飞机");
+		AirPlane airPlane = new AirPlane();
+		airPlane.setFdj("太行");
+		airPlane.setFjsName("lfy");
+		airPlane.setJzName(jzName);
+		airPlane.setPersonNum(300);
+		airPlane.setYc("198.98m");
+		return airPlane;
+	}
+```
+
+```java
+<bean id="airPlane02" class="com.atguigu.bean.AirPlane" 
+		factory-bean="AirPlaneInstanceFactory"  
+		factory-method="getAirPlane">
+		<constructor-arg value="王五"></constructor-arg>
+</bean>
+```
+
+```java
+@Test
+	public void test09() {
+		//Object bean = ioc.getBean("airPlane01");
+		//System.out.println(bean);
+		Object bean = ioc.getBean("airPlane02");
+		System.out.println("容器启动完成。。。。"+bean);
+	}
+```
+
+![image-20200122190914267](F:\code\SpringLearning-\image\image-20200122190914267.png)
+
+3）FactoryBean
+
+FactoryBean(是Spring规定的一个借口）只要是这个借口的实现类，
+			Spring都认为是一个工厂
+			1.ioc容器启动的时候不会创建实例 
+			2.FactoryBean:获取的时候才创建对象
+
+```java
+<bean id="myFactoryBeanImple" class="com.atguigu.factory.MyFactoryBeanImple"></bean>
+```
+
+```java
+public class MyFactoryBeanImple implements FactoryBean<Book>{
+	/*
+	 * getObject:工厂方法
+	 * 			返回创建对象
+	 */
+	@Override
+	public Book getObject() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("MyFactoryBeanImple..帮你创建对象。。。");
+		Book book = new Book();
+		book.setBookName(UUID.randomUUID().toString());
+		return book;
+	}
+	/*
+	 * 返回创建的对象的类型
+	 * Spring会自动调用这个方法来确认创建的对象是什么类型
+	 * 
+	 */
+	@Override
+	public Class<?> getObjectType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/*
+	 * isSingleton是单例吗？
+	 * false:不是单例
+	 * true:是单例
+	 */
+	@Override
+	public boolean isSingleton() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+}
+```
+
+```java
+@Test
+	public void test10() {
+		Object bean = ioc.getBean("myFactoryBeanImple");
+		Object bean2 = ioc.getBean("myFactoryBeanImple");
+		System.out.println(bean == bean2);
+	}
+```
+
+![image-20200122192646149](C:\Users\试用\AppData\Roaming\Typora\typora-user-images\image-20200122192646149.png)
+
+
+

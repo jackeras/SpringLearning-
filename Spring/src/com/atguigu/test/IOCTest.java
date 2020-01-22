@@ -19,6 +19,22 @@ class IOCTest {
 	
 
 	@Test
+	public void test10() {
+		Object bean = ioc.getBean("myFactoryBeanImple");
+		Object bean2 = ioc.getBean("myFactoryBeanImple");
+		System.out.println(bean == bean2);
+	}
+	
+	@Test
+	public void test09() {
+		//Object bean = ioc.getBean("airPlane01");
+		//System.out.println(bean);
+		Object bean = ioc.getBean("airPlane02");
+		System.out.println("容器启动完成。。。。"+bean);
+	}
+	
+	
+	@Test
 	public void test08() {
 		System.out.println("容器启动完成。。。");
 //		Object bean = ioc.getBean("book");
