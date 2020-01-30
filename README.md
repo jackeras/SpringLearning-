@@ -1,6 +1,4 @@
-
-
-# SpringLearning-
+SpringLearning-
 
 SpringLearning
 
@@ -889,7 +887,133 @@ public class MyFactoryBeanImple implements FactoryBean<Book>{
 
 ![image-20200122192646149](C:\Users\试用\AppData\Roaming\Typora\typora-user-images\image-20200122192646149.png)
 
+## 实验10：创建带有生命周期方法的bean
+
 2020.1.23更新
+
+##### 1.单例Bean生命周期：
+
+​	 		（容器启动）构造器---->初始化方法---->（容器关闭）销毁方法
+
+1）先往xml中加入销毁方法和初始化方法
+
+```java
+<bean id="book01" class="com.atguigu.bean.Book"
+		destroy-method="myDestory" init-method="myInit" scope="prototype"></bean>
+```
+
+2）Book类中加入初始化方法和销毁方法
+
+```java
+public void myInit() {
+		System.out.println("这是图书的初始化方法");
+	}
+public void myDestory() {
+	System.out.println("这是图书的销毁方法");
+}
+```
+
+3）运行空测试类（需要使用ConfigurableApplicationContext才能有close（）方法：
+
+```
+ConfigurableApplicationContext ioc = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+@Test
+	public void test() {
+		ioc.close();
+	}
+```
+
+![image-20200130191659531](F:\code\SpringLearning-\image\image-20200130191659531.png)
+
+​	结果可以看出，单实例在容器启动时创建，并初始化，容器关闭时销毁
+
+##### 2.多实例Bean生命周期：
+
+​		获取bean（构造器---->初始化方法----->容器关闭不会调用bean的销毁方法
+
+1）先往xml中加入销毁方法和初始化方法
+
+```java
+<bean id="book01" class="com.atguigu.bean.Book"
+		destroy-method="myDestory" init-method="myInit" scope="prototype"></bean>
+```
+
+2）Book类中加入初始化方法和销毁方法
+
+```java
+public void myInit() {
+		System.out.println("这是图书的初始化方法");
+	}
+public void myDestory() {
+	System.out.println("这是图书的销毁方法");
+}
+```
+
+3）运行测试类（需要使用ConfigurableApplicationContext才能有close（）方法：
+
+```
+ConfigurableApplicationContext ioc = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+@Test
+	public void test() {
+		Object bean = ioc.getBean("book01");
+		System.out.println("容器关闭");
+		ioc.close();
+	}
+```
+
+![image-20200130191929108](F:\code\SpringLearning-\image\image-20200130191929108.png)
+
+​	结果可以看出，多实例在被调用时创建，并初始化，容器关闭时不会调用销毁方法。
+
+## 实验11：测试bean的后置处理器
+
+后置处理器：
+	  （容器启动）构造器-----后置处理器before，------初始化方法----后置处理器after----bean初始化完成
+	  无论bean是否有初始化方法：后置处理器都会默认有，还会继续工作
+
+1.后置处理器MybeanPostProcessor类
+
+```java
+package com.atguigu.bean;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+
+public class MyBeanPostProcessor implements BeanPostProcessor{
+@Override
+public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+// TODO Auto-generated method stub
+System.out.println("【"+beanName+"】bean初始化方法调用完了。。。。。AfterInitialization。。。");
+//初始化之后返回的bean，返回的是什么，容器中保存的就是什么
+return bean;
+}
+@Override
+public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+// TODO Auto-generated method stub
+System.out.println("【"+beanName+"】bean将要调用初始化方法了。。。。");
+//返回传入的bean
+return bean;
+	}
+}
+```
+
+2.在xml中注册
+
+```java
+<bean id="beanPostProcessor" class="com.atguigu.bean.MyBeanPostProcessor"></bean>
+```
+
+![image-20200130194507999](F:\code\SpringLearning-\image\image-20200130194507999.png)
+
+​	结果显示：后置处理器before会在初始化方法前调用，而后置处理器After会在初始化方法之后调用
+
+## 实验12：引用外部属性文件★
+
+
+
+
 
 
 
