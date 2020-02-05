@@ -1,4 +1,4 @@
-# 一、SpringIOC学习
+# 一、SpringIOCd学习
 
 2020.1.21更新
 
@@ -117,7 +117,7 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named '
 org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type [com.atguigu.bean.Person] is defined:expected single matching bean but found 2: person01,person02
 ```
 
-## 实验3：通过构造器为bean的属性赋值（index,type属性介绍）通过p名称空间为bean赋值
+## 实验三：通过构造器为bean的属性赋值（index,type属性介绍）通过p名称空间为bean赋值
 
 1.通过构造器为bean的属性赋值（index,type属性介绍）
 
@@ -162,7 +162,7 @@ public Person(String lastName, Integer age, String gender, String email) {
 }
 ```
 
-#### index,type属性介绍：
+**index,type属性介绍：**
 
 index可以起到定位的作用
 
@@ -177,7 +177,7 @@ index可以起到定位的作用
 	</bean>
 ```
 
-#### 带来的问题：
+**带来的问题：**
 
 如果有构造器重载的情况下，ioc配置里，可能产生混乱。例如：
 
@@ -247,9 +247,9 @@ public Person(String lastName,String email, String gender) {
 	</bean>
 ```
 
-## 实验4：正确的为各种属性赋值
+## 实验四：正确的为各种属性赋值
 
-#### 1、测试使用null值 
+**1、测试使用null值** 
 
 默认引用类型就是null，基本类型是默认值
 
@@ -270,7 +270,7 @@ public Person(String lastName,String email, String gender) {
 
 
 
-#### 错误赋值null：
+**错误赋值null：**
 
 ```java
 <bean id="person01" class="com.atguigu.bean.Person">
@@ -289,7 +289,7 @@ public Person(String lastName,String email, String gender) {
 
 ![image-20200122105151002](C:\Users\试用\AppData\Roaming\Typora\typora-user-images\image-20200122105151002.png)
 
-#### 正确赋值null：在property下用null标签赋值
+**正确赋值null：在property下用null标签赋值**
 
 ```java
 <bean id="person01" class="com.atguigu.bean.Person">
@@ -301,7 +301,7 @@ public Person(String lastName,String email, String gender) {
      </bean>
 ```
 
-#### 2、引用类型赋值（引用其他bean、引用内部bean）
+**2、引用类型赋值（引用其他bean、引用内部bean）**
 
 1）引用其他bean
 
@@ -351,7 +351,7 @@ public Person(String lastName,String email, String gender) {
 
 ![image-20200122111515451](C:\Users\试用\AppData\Roaming\Typora\typora-user-images\image-20200122111515451.png)
 
-#### 3.集合类型赋值（List、Map、Properties）
+**3.集合类型赋值（List、Map、Properties）**
 
 1）list赋值（外部book，引用外部book）
 
@@ -382,7 +382,7 @@ public Person(String lastName,String email, String gender) {
 }
 ```
 
-#### 问题：内部bean写id，有没有用？
+**问题：内部bean写id，有没有用？**
 
 内部bean写id，不能被外部获取到，只能在内部使用
 
@@ -425,7 +425,7 @@ public Person(String lastName,String email, String gender) {
 }
 ```
 
-##### 会报错：
+**会报错：**
 
 ```java
 /*
@@ -510,7 +510,7 @@ public Person(String lastName,String email, String gender) {
 
 ![image-20200122153654152](F:\code\SpringLearning-\image\image-20200122153654152.png)
 
-#### 4.util名称空间创建集合类型的bean
+**4.util名称空间创建集合类型的bean**
 
 ```java
 <!-- 相当于new LinkedHashMap() -->
@@ -551,7 +551,7 @@ public Person(String lastName,String email, String gender) {
 
 ![image-20200122155543287](F:\code\SpringLearning-\image\image-20200122155543287.png)
 
-#### 5.级联属性赋值
+**5.级联属性赋值**
 
 级联属性可以修改属性的属性，注意：原来的bean的值可能会被修改
 
@@ -575,7 +575,7 @@ public Person(String lastName,String email, String gender) {
 
 
 
-## 实验6：通过继承实现bean配置信息的重用
+## 实验六：通过继承实现bean配置信息的重用
 
 ```java
 <bean id="person05" class="com.atguigu.bean.Person">
@@ -600,7 +600,7 @@ public Person(String lastName,String email, String gender) {
 
 ![image-20200122161247032](F:\code\SpringLearning-\image\image-20200122161247032.png)
 
-## 实验7：通过abstract属性创建一个模板bean
+## 实验七：通过abstract属性创建一个模板bean
 
 ```java
 <!-- abstract="true" 这个bean的配置是一个抽象的，不能获取它的实例，只能被别人用来继承 -->
@@ -620,7 +620,7 @@ public Person(String lastName,String email, String gender) {
 	}
 ```
 
-#### 报错：
+**报错：**
 
 ```java
 org.springframework.beans.factory.BeanIsAbstractException: 
@@ -628,7 +628,7 @@ org.springframework.beans.factory.BeanIsAbstractException:
 		Bean definition is abstract
 ```
 
-## 实验8：bean之间的依赖
+## 实验八：bean之间的依赖
 
 1）没有建立依赖之前的bean创建顺序：
 
@@ -656,7 +656,7 @@ org.springframework.beans.factory.BeanIsAbstractException:
 
 ![image-20200122162953234](F:\code\SpringLearning-\image\image-20200122162953234.png)
 
-## 实验9：测试bean的作用域，分别创建单实例和多实例的bean★
+## 实验九：测试bean的作用域，分别创建单实例和多实例的bean★
 
 bean的作用域:指定bean是否单实例，xxx：默认是单实例的	
 scope属性：
@@ -670,7 +670,7 @@ scope属性：
 	request：在web环境下，同一次请求创建一个bean实例（没用）
 	session：在web环境下，同一次会话创建一个bean实例（没用）
 
-#### 1.singleton
+**1.singleton**
 
 ```java
 <bean id="book" class="com.atguigu.bean.Book"></bean>
@@ -696,7 +696,7 @@ scope=“singleton”结论：
 1）在容器启动完成之前就已经创建好对象，保存在容器中了
 2）任何获取都是获取之前创建好的那个对象
 
-#### 2.prototype（多实例）
+**2.prototype（多实例）**
 
 ```java
 <bean id="book" class="com.atguigu.bean.Book" scope="prototype"></bean>
@@ -723,12 +723,12 @@ scope=“prototype”结论：
 2）获取的时候才会去创建这个bean
 3）每次获取都会创建一个新的对象
 
-## 实验5：配置通过静态工厂方法创建的bean、实例工厂方法创建的bean、FactoryBean★
+## 实验五：配置通过静态工厂方法创建的bean、实例工厂方法创建的bean、FactoryBean★
 
 工厂模式：工厂帮我们创建对象；有一个专门帮我们创建对象的类，这个类就是工厂
 					AirPlaneFactory.getAirPlane(String jzName);
 
-#### 1)静态工厂
+**1)静态工厂**
 
 静态工厂：工厂本身不用创建对象；通过静态方法调用，对象 = 工厂类.工厂方法名（）；
 
@@ -774,7 +774,7 @@ public class AirPlaneStaticFactory {
 
 ![image-20200122185808216](F:\code\SpringLearning-\image\image-20200122185808216.png)
 
-#### 2)实例工厂
+**2)实例工厂**
 
 factory-method:指定这个实例工厂中哪个方法是工厂方法
 
@@ -881,11 +881,11 @@ public class MyFactoryBeanImple implements FactoryBean<Book>{
 
 ![image-20200122192646149](C:\Users\试用\AppData\Roaming\Typora\typora-user-images\image-20200122192646149.png)
 
-## 实验10：创建带有生命周期方法的bean
+## 实验十：创建带有生命周期方法的bean
 
 2020.1.23更新
 
-##### 1.单例Bean生命周期：
+**1.单例Bean生命周期：**
 
 ​	 		（容器启动）构造器---->初始化方法---->（容器关闭）销毁方法
 
@@ -922,7 +922,7 @@ ConfigurableApplicationContext ioc = new ClassPathXmlApplicationContext("applica
 
 ​	结果可以看出，单实例在容器启动时创建，并初始化，容器关闭时销毁
 
-##### 2.多实例Bean生命周期：
+**2.多实例Bean生命周期：**
 
 ​		获取bean（构造器---->初始化方法----->容器关闭不会调用bean的销毁方法
 
@@ -961,7 +961,7 @@ ConfigurableApplicationContext ioc = new ClassPathXmlApplicationContext("applica
 
 ​	结果可以看出，多实例在被调用时创建，并初始化，容器关闭时不会调用销毁方法。
 
-## 实验11：测试bean的后置处理器
+## 实验十一：测试bean的后置处理器
 
 后置处理器：
 	  （容器启动）构造器-----后置处理器before，------初始化方法----后置处理器after----bean初始化完成
@@ -1003,7 +1003,7 @@ return bean;
 
 ​	结果显示：后置处理器before会在初始化方法前调用，而后置处理器After会在初始化方法之后调用
 
-## 实验12：引用外部属性文件★
+## 实验十二：引用外部属性文件★
 
 
 
